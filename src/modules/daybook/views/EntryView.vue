@@ -1,48 +1,101 @@
 <template>
-    <div class="entry-title d-flex justify-content-between p-2">
-        <div>
-            <span class="text-success fs-3 fw-bold">
-                15
-            </span>
-            <span class="mx-1 fs-3">
-                Julio
-            </span>
-            <span class="mx-2 fs-4 fw-light">
-                2021, jueves
-            </span>
+    <template v-if="entry">
+        <div class="entry-title d-flex justify-content-between p-2">
+            <div>
+                <span class="text-success fs-3 fw-bold">
+                    {{ day }}
+                </span>
+                <span class="mx-1 fs-3">
+                    {{ month }}
+                </span>
+                <span class="mx-2 fs-4 fw-light">
+                    {{ yearDay }}
+                </span>
+            </div>
+
+            <div>
+                <button class="btn btn-danger">Borrar
+                    <i class="fa fa-trash-alt"></i>
+                </button>
+
+                <button class="btn btn-primary">Subir foto
+                    <i class="fa fa-upload"></i>
+                </button>
+            </div>
         </div>
 
-        <div>
-            <button class="btn btn-danger">Borrar
-                <i class="fa fa-trash-alt"></i>
-            </button>
+        <hr />
 
-            <button class="btn btn-primary">Subir foto
-                <i class="fa fa-upload"></i>
-            </button>
+        <div class="d-flec flex-colum px-3 h-75">
+            <textarea placeholder="¿Qué sucedió hoy?" v-model="entry.text"></textarea>
         </div>
-    </div>
 
-    <hr />
+        <img class="img-thumbnail"
+            src="https://images.wikidexcdn.net/mwuploads/esssbwiki/c/cb/latest/20220530212008/Mario_Mario_Party_Superstars.png"
+            alt="img" />
 
-    <div class="d-flec flex-colum px-3 h-75">
-        <textarea placeholder="¿Qué sucedió hoy?"></textarea>
-    </div>
+    </template>
 
     <Fab icon="fa-save" />
 
-    <img class="img-thumbnail"
-        src="https://images.wikidexcdn.net/mwuploads/esssbwiki/c/cb/latest/20220530212008/Mario_Mario_Party_Superstars.png"
-        alt="img" />
 </template>
 
 <script>
 import { defineAsyncComponent } from '@vue/runtime-core'
+import { mapGetters } from 'vuex'
+import getDayMonthYear from '../helpers/getDayMonthYear';
+
 export default {
     name: 'enty-view',
+    props: {
+        id: {
+            type: String,
+            required: true,
+        }
+    },
     components: {
         Fab: defineAsyncComponent(() => import('../components/Fav.vue'))
+    },
+    data() {
+        return {
+            entry: null
+        }
+    },
+    computed: {
+        ...mapGetters('journal', ['getEntryById']),
+        day() {
+            const { day } = getDayMonthYear(this.entry.date)
+            return day;
+        },
+        month() {
+            const { month } = getDayMonthYear(this.entry.date)
+            return month;
+        },
+        yearDay() {
+            const { yearDay } = getDayMonthYear(this.entry.date)
+            return yearDay;
+        },
+    },
+    methods: {
+        loadEntry() {
+            // llamada al state getEntriesById
+            const entry = this.getEntryById(this.id)
+            if (!entry) {
+                return this.$router.push({ name: 'no-entry' });
+            }
+            this.entry = entry;
+        }
+    },
+    created() {
+        this.loadEntry()
+    },
+    watch: {
+        id(value, oldValue) {
+            console.log({ value, oldValue })
+            this.loadEntry()
+        }
     }
+
 }
 </script>
 

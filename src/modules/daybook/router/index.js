@@ -5,7 +5,7 @@ export default {
     children: [
         {
             path: "",
-            name: "no-entry-selected",
+            name: "no-entry",
             component: () =>
                 import(
                     /* webpackChunkName: "daybook-NoEntrySelected" */ "@/modules/daybook/views/NoEntrySelected.vue"
@@ -18,6 +18,11 @@ export default {
                 import(
                     /* webpackChunkName: "daybook-NoEntrySelected" */ "@/modules/daybook/views/EntryView.vue"
                 ),
+            props: ({ params: { id } }) => {
+                return {
+                    id,
+                };
+            },
         },
     ],
 };
