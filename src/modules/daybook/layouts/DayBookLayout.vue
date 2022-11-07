@@ -7,7 +7,7 @@
             <EntryList />
         </div>
         <div class="col">
-            <!-- <router-link></router-link> -->
+            <router-view />
         </div>
     </div>
 
