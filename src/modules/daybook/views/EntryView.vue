@@ -14,11 +14,14 @@
             </div>
 
             <div>
-                <button class="btn btn-danger">Borrar
+                <input type="file" @change="onSelectedImage" ref="imageSelector" v-show="false"
+                    accept="image/jpg, image/png, image/webp" />
+
+                <button class="btn btn-danger" @click="onDeleteEntry" v-if="entry.id">Borrar
                     <i class="fa fa-trash-alt"></i>
                 </button>
 
-                <button class="btn btn-primary">Subir foto
+                <button class="btn btn-primary" @click="onSelectImage">Subir foto
                     <i class="fa fa-upload"></i>
                 </button>
             </div>
@@ -30,20 +33,22 @@
             <textarea placeholder="¿Qué sucedió hoy?" v-model="entry.text"></textarea>
         </div>
 
-        <img class="img-thumbnail"
-            src="https://images.wikidexcdn.net/mwuploads/esssbwiki/c/cb/latest/20220530212008/Mario_Mario_Party_Superstars.png"
-            alt="img" />
+        <img v-if="entry.picture && !localImage" class="img-thumbnail" :src="entry.picture" alt="img" />
+        <img v-if="localImage" class="img-thumbnail" :src="localImage" alt="img" />
 
     </template>
 
-    <Fab icon="fa-save" />
+    <Fab icon="fa-save" @on:click="saveEntry" />
 
 </template>
 
 <script>
 import { defineAsyncComponent } from '@vue/runtime-core'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import Swal from 'sweetalert2';
+
 import getDayMonthYear from '../helpers/getDayMonthYear';
+import uploadImage from '../helpers/uploadImage';
 
 export default {
     name: 'enty-view',
@@ -58,7 +63,9 @@ export default {
     },
     data() {
         return {
-            entry: null
+            entry: null,
+            localImage: null,
+            file: null,
         }
     },
     computed: {
@@ -77,13 +84,85 @@ export default {
         },
     },
     methods: {
+        ...mapActions('journal', ['updateEntries', 'createEntries', 'deleteEntry']),
+
         loadEntry() {
-            // llamada al state getEntriesById
-            const entry = this.getEntryById(this.id)
-            if (!entry) {
-                return this.$router.push({ name: 'no-entry' });
+            let entry;
+            if (this.id === 'new') {
+                entry = {
+                    text: '',
+                    date: new Date().getTime()
+                }
+            } else {
+                // llamada al state getEntriesById
+                entry = this.getEntryById(this.id)
+                if (!entry) {
+                    return this.$router.push({ name: 'no-entry' });
+                }
             }
             this.entry = entry;
+        },
+        async saveEntry() {
+            // new Swal({
+            //     title: 'Espere por favor',
+            //     allowOutsideClick: false
+            // })
+            // Swal.showLoading();
+            const picture = await uploadImage(this.file)
+            console.log('picture', picture)
+            this.entry.picture = picture;
+
+            if (this.entry.id) {
+                console.log('updating entry....')
+                await this.updateEntries(this.entry)
+            } else {
+                console.log('creating entry....')
+                const id = await this.createEntries(this.entry)
+                this.$router.push({ name: 'entry', params: { id } })
+            }
+            this.file = null;
+            this.localImage = null;
+            Swal.fire({
+                icon: 'success',
+                title: 'Entrada de registro correcta',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        },
+        async onDeleteEntry() {
+            const { isConfirmed } = await Swal.fire({
+                title: '¿Estas seguro?',
+                text: 'Una vez borrado no se puede recuperar',
+                showDenyButton: true,
+                confirmButtonText: 'Si, estoy seguro'
+            })
+            if (isConfirmed) {
+                console.log('deleting entry ....', this.entry)
+                await this.deleteEntry(this.entry.id)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro borrado correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                this.$router.push({ name: 'no-entry' })
+            }
+        },
+        onSelectedImage({ target }) {
+            console.log(target.files[0])
+            const file = target.files[0]
+            if (!file) {
+                this.localImage = null;
+                this.file = null;
+                return;
+            }
+            this.file = file;
+            const fr = new FileReader();
+            fr.onload = () => this.localImage = fr.result;
+            fr.readAsDataURL(file);
+        },
+        onSelectImage() {
+            this.$refs.imageSelector.click();
         }
     },
     created() {
@@ -94,7 +173,8 @@ export default {
             console.log({ value, oldValue })
             this.loadEntry()
         }
-    }
+    },
+
 
 }
 </script>

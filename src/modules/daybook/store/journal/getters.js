@@ -1,6 +1,4 @@
-// export const myGetters =  ( state ) => {
-
-// };
+// export const myGetters =  ( state ) => {};
 
 export const getEntriesByTerm =
     (state) =>
