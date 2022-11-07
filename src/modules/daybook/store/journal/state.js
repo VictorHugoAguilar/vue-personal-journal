@@ -4,7 +4,7 @@ export default () => ({
         {
             id: new Date().getTime(),
             date: new Date().toDateString(),
-            text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque deserunt consectetur explicabo molestiae. Incidunt atque in amet laboriosam provident natus. Eaque optio itaque earum voluptatum sunt rerum provident dolores at!",
+            text: "Lorem Casa ipsum, dolor sit amet consectetur adipisicing elit. Neque deserunt consectetur explicabo molestiae. Incidunt atque in amet laboriosam provident natus. Eaque optio itaque earum voluptatum sunt rerum provident dolores at!",
             picture: null,
         },
         {

@@ -1,7 +1,3 @@
-// export const myGetters = async ( state ) => {
+// export const myGetters = ( state ) => {
 
 // };
-
-export const getEntriesByTerm = async (/* state */) => {};
-
-export const getEntriesById = async (/* state */) => {};
