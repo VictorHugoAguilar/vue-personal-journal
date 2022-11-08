@@ -20,7 +20,6 @@ describe("Pruebas en el uploadimage", () => {
         const file = new File([data], "foto.gif");
         const { url, id } = await uploadImage(file);
         expect(typeof url).toBe("string");
-        //console.log({ url, extension, id });
         const { deleted } = await cloudinary.v2.api.delete_resources(id);
         expect(deleted[id]).toBe("deleted");
     });

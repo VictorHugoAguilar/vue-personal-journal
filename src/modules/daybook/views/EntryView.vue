@@ -108,15 +108,14 @@ export default {
             //     allowOutsideClick: false
             // })
             // Swal.showLoading();
-            const { url } = await uploadImage(this.file)
-            console.log('picture url', url)
-            this.entry.picture = url;
+            if (this.file) {
+                const { url } = await uploadImage(this.file)
+                this.entry.picture = url;
+            }
 
             if (this.entry.id) {
-                console.log('updating entry....')
                 await this.updateEntries(this.entry)
             } else {
-                console.log('creating entry....')
                 const id = await this.createEntries(this.entry)
                 this.$router.push({ name: 'entry', params: { id } })
             }
@@ -137,7 +136,6 @@ export default {
                 confirmButtonText: 'Si, estoy seguro'
             })
             if (isConfirmed) {
-                console.log('deleting entry ....', this.entry)
                 await this.deleteEntry(this.entry.id)
                 Swal.fire({
                     icon: 'success',
@@ -149,7 +147,6 @@ export default {
             }
         },
         onSelectedImage({ target }) {
-            console.log(target.files[0])
             const file = target.files[0]
             if (!file) {
                 this.localImage = null;
@@ -170,7 +167,7 @@ export default {
     },
     watch: {
         id(value, oldValue) {
-            console.log({ value, oldValue })
+            value; oldValue;
             this.loadEntry()
         }
     },

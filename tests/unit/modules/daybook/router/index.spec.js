@@ -30,7 +30,6 @@ describe("Pruebas en el router module de daybook", () => {
         dayBookRouter.children.forEach((child) => promiseRoutes.push(child.component()));
 
         const routes = (await Promise.all(promiseRoutes)).map((r) => r.default.name);
-        // console.log(routes);
         expect(routes).toContain("no-entry-selected");
         expect(routes).toContain("entry-view");
     });
@@ -42,10 +41,8 @@ describe("Pruebas en el router module de daybook", () => {
             },
         };
         // Modo estático
-        //console.log(dayBookRouter.children[1].props(route))
         //expect(dayBookRouter.children[1].props(route)).toEqual({ id: 'ABC-123' });
         const entryRoute = dayBookRouter.children.find((route) => route.name === "entry");
-        // console.log(entryRoute);
         expect(entryRoute.props(route)).toEqual({ id: "ABC-123" });
     });
 });
