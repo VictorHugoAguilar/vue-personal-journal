@@ -51,7 +51,7 @@ import getDayMonthYear from '../helpers/getDayMonthYear';
 import uploadImage from '../helpers/uploadImage';
 
 export default {
-    name: 'enty-view',
+    name: 'entry-view',
     props: {
         id: {
             type: String,
@@ -108,9 +108,9 @@ export default {
             //     allowOutsideClick: false
             // })
             // Swal.showLoading();
-            const picture = await uploadImage(this.file)
-            console.log('picture', picture)
-            this.entry.picture = picture;
+            const { url } = await uploadImage(this.file)
+            console.log('picture url', url)
+            this.entry.picture = url;
 
             if (this.entry.id) {
                 console.log('updating entry....')

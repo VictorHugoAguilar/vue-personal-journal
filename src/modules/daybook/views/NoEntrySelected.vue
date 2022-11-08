@@ -7,6 +7,7 @@
 
 <script>
 import { defineAsyncComponent } from '@vue/runtime-core'
+
 export default {
     name: 'no-entry-selected',
     components: {
