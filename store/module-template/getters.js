@@ -1,3 +1,3 @@
-// export const myGetters = async ( state ) => {
+// export const myGetters = ( state ) => {
 
 // };
