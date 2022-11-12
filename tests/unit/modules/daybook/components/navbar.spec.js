@@ -28,7 +28,7 @@ describe("Pruebas en el Navbar components", () => {
         plugins: [store],
       },
     });
-    
+
     expect(wrapper.html()).toMatchSnapshot();
   });
 
