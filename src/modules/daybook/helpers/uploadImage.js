@@ -14,7 +14,6 @@ const uploadImage = async (file) => {
             url: data.secure_url,
         };
     } catch (error) {
-        console.error("error al cargar", error);
         return null;
     }
 };

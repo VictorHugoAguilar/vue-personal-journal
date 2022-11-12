@@ -2,35 +2,35 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 const useAuth = () => {
-    const store = useStore();
+  const store = useStore();
 
-    const createUser = async (user) => {
-        return await store.dispatch("auth/createUser", user);
-    };
+  const createUser = async (user) => {
+    return await store.dispatch("auth/createUser", user);
+  };
 
-    const loginUser = async (user) => {
-        return await store.dispatch("auth/signInUser", user);
-    };
+  const loginUser = async (user) => {
+    return await store.dispatch("auth/signInUser", user);
+  };
 
-    const checkAuthStatus = async () => {
-        return await store.dispatch("auth/checkAuthentication");
-    };
+  const checkAuthStatus = async () => {
+    return await store.dispatch("auth/checkAuthentication");
+  };
 
-    const logout = () => {
-        store.commit("auth/logout");
-        // limpiar las entradas
-        store.commit("journal/clearEntries");
-    };
+  const logout = () => {
+    store.commit("auth/logout");
+    // limpiar las entradas
+    store.commit("journal/clearEntries");
+  };
 
-    return {
-        checkAuthStatus,
-        createUser,
-        loginUser,
-        logout,
+  return {
+    checkAuthStatus,
+    createUser,
+    loginUser,
+    logout,
 
-        authStatus: computed(() => store.getters["currentState"]),
-        username: computed(() => store.getters["username"]),
-    };
+    authStatus: computed(() => store.getters["auth/currentState"]),
+    username: computed(() => store.getters["auth/username"]),
+  };
 };
 
 export default useAuth;
