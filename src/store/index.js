@@ -4,10 +4,10 @@ import auth from "@/modules/auth/store";
 
 
 const store = createStore({
-    modules: {
-        journal,
-        auth
-    },
+	modules: {
+		journal,
+		auth
+	},
 });
 
 export default store;
