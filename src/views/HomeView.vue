@@ -4,11 +4,12 @@
 
     <h1>Journal</h1>
 
-    <button @click="goToDaybook" class="btn btn-primary">Primary</button>
-    <button @click="goToDaybook" class="btn btn-secondary">Secondary</button>
+     <button @click="goToDaybook" class="btn btn-primary">Primary</button>
+        <button @click="goToDaybook" class="btn btn-secondary">Secondary</button>
     <button @click="goToDaybook" class="btn btn-success">Success</button>
-    <button @click="goToDaybook" class="btn btn-danger">Danger</button>
+         <button @click="goToDaybook" class="btn btn-danger">Danger</button>
 
+         
 
   </div>
 </template>

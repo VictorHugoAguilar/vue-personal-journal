@@ -15,7 +15,7 @@
 
 			<div>
 				<input type="file" @change="onSelectedImage" ref="imageSelector" v-show="false"
-					accept="image/jpg, image/png, image/webp" />
+																																		 accept="image/jpg, image/png, image/webp" />
 
 				<button class="btn btn-danger" @click="onDeleteEntry" v-if="entry.id">Borrar
 					<i class="fa fa-trash-alt"></i>
